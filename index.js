@@ -19,12 +19,12 @@ function countCountriesWithPopulationGreaterThan(value, jsonData) {
         .length;
 }
 
-async function resolveCountingPromises(promises, borderValue) {
+async function resolveCountingPromises(promises, liimt) {
     console.log(`Started resolving ${promises.length} promises `)
     const result = await Promise.all(promises)
         .then(promiseArray => {
             return promiseArray.map(jsonResponse => {
-                return countCountriesWithPopulationGreaterThan(borderValue, jsonResponse);
+                return countCountriesWithPopulationGreaterThan(liimt, jsonResponse);
             }).reduce((prev, curr) => {
                 return prev + curr;
             }, 0);
@@ -34,23 +34,23 @@ async function resolveCountingPromises(promises, borderValue) {
     return result;
 }
 
-async function getPopulation(borderValue, keyword) {
+async function getPopulation(limit, keyword) {
     const result = await getCountriesResponse(keyword, null)
         .then(jsonResponse => {
             const totalPages = jsonResponse.total_pages;
             console.log(`Total pages ${totalPages}`);
 
             if (totalPages === 1) {
-                return countCountriesWithPopulationGreaterThan(borderValue, jsonResponse);
+                return countCountriesWithPopulationGreaterThan(limit, jsonResponse);
             } else {
-                const firstPageResult = countCountriesWithPopulationGreaterThan(borderValue, jsonResponse);
+                const firstPageResult = countCountriesWithPopulationGreaterThan(limit, jsonResponse);
 
                 let promises = [];
                 for (let nextPage = 2; nextPage <= jsonResponse.total_pages; nextPage++) {
                     promises.push(getCountriesResponse(keyword, nextPage));
                 }
 
-                return resolveCountingPromises(promises, borderValue).then(result => result + firstPageResult);
+                return resolveCountingPromises(promises, limit).then(result => result + firstPageResult);
             }
         })
         .catch(err => {
