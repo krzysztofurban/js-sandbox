@@ -73,4 +73,4 @@ function testGetPopulation(testData) {
 }
 
 
-test(testData);
+testGetPopulation(testData);
