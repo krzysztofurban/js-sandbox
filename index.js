@@ -19,11 +19,11 @@ function countCountriesWithPopulationGreaterThan(value, jsonData) {
         .length;
 }
 
-async function resolveCountingPromises(promises, liimt) {
+async function resolveCountingPromises(promises, limit) {
     const result = await Promise.all(promises)
         .then(promiseArray => {
             return promiseArray.map(jsonResponse => {
-                return countCountriesWithPopulationGreaterThan(liimt, jsonResponse);
+                return countCountriesWithPopulationGreaterThan(limit, jsonResponse);
             }).reduce((prev, curr) => {
                 return prev + curr;
             }, 0);
