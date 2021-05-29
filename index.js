@@ -63,10 +63,10 @@ const testData = [
     { limit: 2, keyword: "po", expected: 4 }
 ];
 
-function test(testData) {
+function testGetPopulation(testData) {
     testData.forEach(test => {
         getPopulation(test.limit, test.keyword).then(result => {
-            console.log(`(${test.limit}, ${test.keyword}) - ${result}`); //24
+            console.log(`(${test.limit}, ${test.keyword}) - ${result}`);
             console.assert(result === test.expected, errorMsg(result, test.expected));
         });
     });
