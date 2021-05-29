@@ -20,7 +20,7 @@ function countCountriesWithPopulationGreaterThan(value, jsonData) {
 }
 
 async function resolveCountingPromises(promises, limit) {
-    const result = await Promise.all(promises)
+    return await Promise.all(promises)
         .then(promiseArray => {
             return promiseArray.map(jsonResponse => {
                 return countCountriesWithPopulationGreaterThan(limit, jsonResponse);
@@ -29,12 +29,10 @@ async function resolveCountingPromises(promises, limit) {
             }, 0);
         })
         .catch(err => console.error(err));
-
-    return result;
 }
 
 async function getPopulation(limit, keyword) {
-    const result = await getCountriesResponse(keyword, null)
+    return await getCountriesResponse(keyword, null)
         .then(jsonResponse => {
             const totalPages = jsonResponse.total_pages;
 
@@ -54,18 +52,23 @@ async function getPopulation(limit, keyword) {
         .catch(err => {
             console.error(err);
         });
-    
-    return result;
 };
 
-getPopulation(2, 's').then(result => {
-    console.log(`(2,s) - ${result}`); // 103
-});
+const errorMsg = (result, expected) => `Invalid result should be ${expected} but is ${result}`;
 
-getPopulation(2, 'po').then(result => {
-    console.log(`(2,po) - ${result}`); //4
-});
+const testData = [
+    { limit: 1337321, keyword: "p", expected: 24 },
+    { limit: 2, keyword: "s", expected: 103 },
+    { limit: 2, keyword: "po", expected: 4 }
+];
 
-getPopulation(1337321, 'p').then(result => {
-    console.log(`(1337321,p) - ${result}`); //24
-});
+function test(testData) {
+    testData.forEach(test => {
+        getPopulation(test.limit, test.keyword).then(result => {
+            console.log(`(${test.limit}, ${test.keyword}) - ${result}`); //24
+            console.assert(result === test.expected, errorMsg(result, test.expected));
+        });
+    });
+}
+
+test(testData);
