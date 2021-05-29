@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+import fetch from 'node-fetch';
 
 async function getCountriesResponse(keyword, page = 1) {
     // console.debug(`Sending request with params keyword: ${keyword} page: ${page}`);
@@ -59,6 +59,7 @@ const errorMsg = (result, expected) => `Invalid result should be ${expected} but
 const testData = [
     { limit: 1337321, keyword: "p", expected: 24 },
     { limit: 2, keyword: "s", expected: 103 },
+    { limit: 2, keyword: "po", expected: 4 },
     { limit: 2, keyword: "po", expected: 4 }
 ];
 
@@ -70,5 +71,6 @@ function test(testData) {
         });
     });
 }
+
 
 test(testData);
