@@ -1,11 +1,11 @@
 const fetch = require('node-fetch');
 
 async function getCountriesResponse(keyword, page = 1) {
-    console.log(`Sending request with params keyword: ${keyword} page: ${page}`);
+    // console.debug(`Sending request with params keyword: ${keyword} page: ${page}`);
 
     const jsonResponse = await fetch(`https://jsonmock.hackerrank.com/api/countries/search?name=${keyword}&page=${page}`)
         .then(response => {
-            console.log("Request passed");
+            // console.debug("Request passed");
             return response.json()
         })
         .catch(err => console.error(`Error ${err}`));
@@ -20,7 +20,6 @@ function countCountriesWithPopulationGreaterThan(value, jsonData) {
 }
 
 async function resolveCountingPromises(promises, liimt) {
-    console.log(`Started resolving ${promises.length} promises `)
     const result = await Promise.all(promises)
         .then(promiseArray => {
             return promiseArray.map(jsonResponse => {
@@ -38,7 +37,6 @@ async function getPopulation(limit, keyword) {
     const result = await getCountriesResponse(keyword, null)
         .then(jsonResponse => {
             const totalPages = jsonResponse.total_pages;
-            console.log(`Total pages ${totalPages}`);
 
             if (totalPages === 1) {
                 return countCountriesWithPopulationGreaterThan(limit, jsonResponse);
@@ -56,10 +54,18 @@ async function getPopulation(limit, keyword) {
         .catch(err => {
             console.error(err);
         });
-
+    
     return result;
 };
 
 getPopulation(2, 's').then(result => {
-    console.warn(result);
+    console.log(`(2,s) - ${result}`); // 103
+});
+
+getPopulation(2, 'po').then(result => {
+    console.log(`(2,po) - ${result}`); //4
+});
+
+getPopulation(1337321, 'p').then(result => {
+    console.log(`(1337321,p) - ${result}`); //24
 });
