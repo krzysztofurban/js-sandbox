@@ -31,7 +31,7 @@ async function findPersonInformation(name, startPage) {
 
             if (person === undefined) {
                 let nextPage = jsonResponse.next.split("page=")[1];
-                findPersonInformation(name, nextPage);
+                return findPersonInformation(name, nextPage);
             } else {
                 return person;
             }
@@ -62,7 +62,7 @@ const errorMsg = (result, expected) => `Invalid result should be ${expected} but
 const testData = [
     { name: "Luke Skywalker", expectedPlanet: "Tatooine" },
     { name: "Beru Whitesun lars", expectedPlanet: "Tatooine" },
-    { name: "Finis Valorum", expectedPlanet: "Tatooine" }
+    { name: "Finis Valorum", expectedPlanet: "Coruscant" }
 ];
 
 function testPlanetNameFetch(testData) {
