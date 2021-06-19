@@ -1,3 +1,3 @@
 #!/bin/bash
 
-node startwarsapi.js
+node starwarsapi.js
