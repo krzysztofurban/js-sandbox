@@ -24,6 +24,7 @@ function findFirstByName(jsonResponse, name) {
 }
 
 async function findPersonInformation(name, startPage) {
+    console.log(startPage);
     let personInfo = await getResponse(`https://swapi.dev/api/people/?page=${startPage}`)
         .then(jsonResponse => {
             let person = findFirstByName(jsonResponse, name);
@@ -32,7 +33,6 @@ async function findPersonInformation(name, startPage) {
                 let nextPage = jsonResponse.next.split("page=")[1];
                 findPersonInformation(name, nextPage);
             } else {
-                console.log(person);
                 return person;
             }
         })
@@ -46,6 +46,7 @@ async function getPlanetByName(name) {
         .then(person => person)
         .catch(err => console.error(`Error ${err}`));
 
+    // TODO: Not working properly, doesn't wait for previous results
     const planetName = await getPlanetName(person.homeworld)
         .then(planetName => planetName)
         .catch(err => console.error(`Error ${err}`));
@@ -64,7 +65,7 @@ const testData = [
     { name: "Finis Valorum", expectedPlanet: "Tatooine" }
 ];
 
-function testGetPopulation(testData) {
+function testPlanetNameFetch(testData) {
     testData.forEach(test => {
         getPlanetByName(test.name)
             .then(personInfo => {
@@ -75,4 +76,4 @@ function testGetPopulation(testData) {
     });
 }
 
-testGetPopulation(testData);
+testPlanetNameFetch(testData);
