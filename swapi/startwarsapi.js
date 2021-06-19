@@ -46,7 +46,6 @@ async function getPlanetByName(name) {
         .then(person => person)
         .catch(err => console.error(`Error ${err}`));
 
-    // TODO: Not working properly, doesn't wait for previous results
     const planetName = await getPlanetName(person.homeworld)
         .then(planetName => planetName)
         .catch(err => console.error(`Error ${err}`));
